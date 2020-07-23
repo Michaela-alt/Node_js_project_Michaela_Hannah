@@ -3937,7 +3937,7 @@ Automotive
       var respond = JSON.parse(xhr.responseText);
       if (xhr.readyState == 4 && xhr.status == "200") {
           document.getElementById('registration_result').innerHTML = respond.message;
-          console.log(respond.message);
+          //console.log(respond.message);
       } else {
           console.error(respond);
           document.getElementById('registration_result').innerHTML = respond.message;
