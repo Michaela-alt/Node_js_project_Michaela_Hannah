@@ -78,8 +78,15 @@ app.get('/api/users/:username/:password', (req, res) => {
         return res.status(404).json(jsonRespond);
     }
 
+    const user = {
+        id: check_user.id,
+        username: req.params.username,
+        email: check_user.email,
+        password: req.params.password
+    };
+
     var jsonRespond = {
-        result: users,
+        result: user,
         message: "Login success"
     }
     return res.json(jsonRespond);
@@ -98,7 +105,7 @@ app.post('/api/users', (req, res) => {
     console.log(req.body);
 
     // VALIDATE
-    const {error} = validateUser(req.body.email);
+    const {error} = validateUser(req.body);
     if (error) {
         console.log('Validation error');
 
@@ -112,7 +119,7 @@ app.post('/api/users', (req, res) => {
     console.log('Validation success and accepted');
 
     // CHECK IF THE EMAIL ALREADY EXISTS
-    console.log('Check existing email: '+req.body.email);
+    console.log('Check existing email: '+req.body);
     const check_user = users.find( u => u.email === req.body.email );
     if (check_user) {
         console.log('Email: '+req.body.email+' is already registered');
@@ -231,6 +238,7 @@ app.listen(port, () => {
 // VALIDATION FUNCTION
 function validateUser(user) {
     const schema = Joi.object({
+        username: Joi.string().alphanum().min(3).max(30),
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
         password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
     });
