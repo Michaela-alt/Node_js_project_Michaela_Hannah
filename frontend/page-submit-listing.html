@@ -576,11 +576,11 @@ cards.
 <div class="pt-8 border-top">
 <div class="contact-section text-center pt-3">
 <div class="form-group mb-5">
-<label for="email" class="font-weight-semibold text-dark font-size-md">Enter email to signup & recieve
+<label for="email-01" class="font-weight-semibold text-dark font-size-md">Enter email to signup & recieve
 notification upon
 listing
 approval</label>
-<input type="email" class="form-control" id="email" placeholder="Enter your contact email">
+<input type="email" class="form-control" id="email-01" placeholder="Enter your contact email">
 </div>
 <div class="d-flex justify-content-center pb-8">
 <div class="custom-control custom-checkbox">
@@ -772,13 +772,13 @@ by <a href="http://g5plus.net/" class="link-hover-dark-primary font-weight-semib
 <form>
 <div class="font-size-md text-dark mb-5">Log In Your Account</div>
 <div class="form-group mb-2">
-<label for="username" class="sr-only">Username</label>
-<input id="username" type="text" class="form-control" placeholder="Username">
+<label for="id_getUsername" class="sr-only">Username</label>
+<input id="id_getUsername" type="text" class="form-control" placeholder="Username">
 </div>
 <div class="form-group mb-3">
 <div class="input-group flex-nowrap align-items-center">
-<label for="password" class="sr-only">Password</label>
-<input id="password" type="text" class="form-control" placeholder="Password">
+<label for="id_getPassword" class="sr-only">Password</label>
+<input id="id_getPassword" type="text" class="form-control" placeholder="Password">
 <a href="#" class="input-group-append text-decoration-none">Forgot?</a>
 </div>
 </div>
@@ -835,8 +835,8 @@ by <a href="http://g5plus.net/" class="link-hover-dark-primary font-weight-semib
 <input id="username-rt" type="text" class="form-control" placeholder="Username">
 </div>
 <div class="form-group mb-2">
-<label for="email-01" class="sr-only">Email</label>
-<input id="email-01" type="text" class="form-control" placeholder="Email Address">
+<label for="email" class="sr-only">Email</label>
+<input id="email" type="text" class="form-control" placeholder="Email Address">
 </div>
 <div class="form-group mb-2">
 <label for="password-rt" class="sr-only">Username</label>
@@ -1217,5 +1217,63 @@ Automotive
 </symbol>
 </defs>
 </svg>
+<script>
+ function Login() {
+  username = document.getElementById('id_getUsername').value;
+  password = document.getElementById('id_getPassword').value;
+  var url  = "http://localhost:3000/api/users/" + username + "/" + password;
+
+  var data = {};
+  data.username = username;
+  data.password = password;
+  var json = JSON.stringify(data);
+
+  var xhr  = new XMLHttpRequest();
+  var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+  xhr.open('GET', url, true);
+  xhr.onload = function() {
+
+   console.log(xhr.responseText);
+
+   var respond = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    document.getElementById('registration_result').innerHTML = respond.message;
+    console.log(respond.message);
+   } else {
+    console.error(respond);
+    document.getElementById('registration_result').innerHTML = respond.message;
+   }
+  }
+  xhr.send(null);
+
+ }
+ function Register() {
+  var url = "http://localhost:3000/api/users";
+  var data = {};
+  data.name = document.getElementById('username-rt').value;
+  data.email = document.getElementById('email').value;
+  data.password = document.getElementById('password-rt').value;
+  var json = JSON.stringify(data);
+  var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+  xhr.onload = function() {
+
+   console.log(xhr.responseText);
+
+   var respond = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    document.getElementById('registration_result').innerHTML = respond.message;
+    //console.log(respond.message);
+   } else {
+    console.error(respond);
+    document.getElementById('registration_result').innerHTML = respond.message;
+   }
+  }
+  xhr.send(json);
+ }
+</script>
 </body>
 </html>

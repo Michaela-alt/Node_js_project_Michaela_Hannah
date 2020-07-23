@@ -3918,18 +3918,30 @@ Automotive
 
 <script>
  function Login() {
-  var url  = "http://localhost:3000/api/users/" + document.getElementById('id_getUsername').value + "/" + document.getElementById('id_getPassword').value;
-  var xhr  = new XMLHttpRequest();
-  var content = "<tr><th>ID</th><th>Course Name</th></tr>";
-  xhr.open('GET', url, true);
-  xhr.onload = function() {
-   var user = JSON.parse(xhr.responseText);
-   if (xhr.readyState == 4 && xhr.status == "200") {
-    content += "<tr><td>" + user.id + "</td><td>" + user.name + "</td></tr>";
-    document.getElementById('result').innerHTML = content;
-   } else {
-    console.error(users);
-   }
+     username = document.getElementById('id_getUsername').value;
+     password = document.getElementById('id_getPassword').value;
+    var url  = "http://localhost:3000/api/users/" + username + "/" + password;
+
+     var data = {};
+     data.username = username;
+     data.password = password;
+     var json = JSON.stringify(data);
+
+    var xhr  = new XMLHttpRequest();
+    var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+    xhr.open('GET', url, true);
+    xhr.onload = function() {
+
+      console.log(xhr.responseText);
+
+      var respond = JSON.parse(xhr.responseText);
+      if (xhr.readyState == 4 && xhr.status == "200") {
+          document.getElementById('registration_result').innerHTML = respond.message;
+          console.log(respond.message);
+      } else {
+          console.error(respond);
+          document.getElementById('registration_result').innerHTML = respond.message;
+      }
   }
   xhr.send(null);
 
@@ -3947,13 +3959,17 @@ Automotive
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
   xhr.onload = function() {
-   var user = JSON.parse(xhr.responseText);
-   if (xhr.readyState == 4 && xhr.status == "200") {
-    content += "<tr><td>" + user.id + "</td><td>" + user.name + "</td><td>"+ user.password +"</td></tr>";
-    document.getElementById('result').innerHTML = content;
-   } else {
-    console.error(users);
-   }
+
+      console.log(xhr.responseText);
+
+      var respond = JSON.parse(xhr.responseText);
+      if (xhr.readyState == 4 && xhr.status == "200") {
+          document.getElementById('registration_result').innerHTML = respond.message;
+          //console.log(respond.message);
+      } else {
+          console.error(respond);
+          document.getElementById('registration_result').innerHTML = respond.message;
+      }
   }
   xhr.send(json);
  }
