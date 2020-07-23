@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Home main | TheDir</title>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Home main | TheDir</title>
 
-<script src="../cdn-cgi/apps/head/2oc_RD5SS6wgN5SiQnSEnWVNHg8.js"></script><link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="vendors/font-awesome/css/fontawesome.css">
-<link rel="stylesheet" href="vendors/magnific-popup/magnific-popup.css">
-<link rel="stylesheet" href="vendors/slick/slick.css">
-<link rel="stylesheet" href="vendors/animate.css">
+   <script src="../cdn-cgi/apps/head/2oc_RD5SS6wgN5SiQnSEnWVNHg8.js"></script><link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="vendors/font-awesome/css/fontawesome.css">
+   <link rel="stylesheet" href="vendors/magnific-popup/magnific-popup.css">
+   <link rel="stylesheet" href="vendors/slick/slick.css">
+   <link rel="stylesheet" href="vendors/animate.css">
 
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -3524,13 +3524,13 @@ by <a href="http://g5plus.net/" class="link-hover-dark-primary font-weight-semib
 <form>
 <div class="font-size-md text-dark mb-5">Log In Your Account</div>
 <div class="form-group mb-2">
-<label for="username" class="sr-only">Username</label>
-<input id="username" type="text" class="form-control" placeholder="Username">
+<label for="id_getUsername" class="sr-only">Username</label>
+<input id="id_getUsername" type="text" class="form-control" placeholder="Username">
 </div>
 <div class="form-group mb-3">
 <div class="input-group flex-nowrap align-items-center">
-<label for="password" class="sr-only">Password</label>
-<input id="password" type="text" class="form-control" placeholder="Password">
+<label for="id_getPassword" class="sr-only">Password</label>
+<input id="id_getPassword" type="password" class="form-control" placeholder="Password">
 <a href="#" class="input-group-append text-decoration-none">Forgot?</a>
 </div>
 </div>
@@ -3540,7 +3540,7 @@ by <a href="http://g5plus.net/" class="link-hover-dark-primary font-weight-semib
 <label class="custom-control-label text-dark" for="check">Remember</label>
 </div>
 </div>
-<button type="submit" class="btn btn-primary btn-block font-weight-bold text-uppercase font-size-lg rounded-sm mb-8">
+<button type="submit" class="btn btn-primary btn-block font-weight-bold text-uppercase font-size-lg rounded-sm mb-8" onclick='Login()'>
 Log In
 </button>
 </form>
@@ -3606,7 +3606,7 @@ Log In
 Terms Privacy Policy and</label>
 </div>
 </div>
-<button type="submit" class="btn btn-primary btn-block font-weight-bold text-uppercase font-size-lg rounded-sm">
+<button type="submit" class="btn btn-primary btn-block font-weight-bold text-uppercase font-size-lg rounded-sm" onclick='Register()'>
 Create an
 account
 </button>
@@ -3915,5 +3915,48 @@ Automotive
 </symbol>
 </defs>
 </svg>
+
+<script>
+ function Login() {
+  var url  = "http://localhost:3000/api/users/" + document.getElementById('id_getUsername').value + "/" + document.getElementById('id_getPassword').value;
+  var xhr  = new XMLHttpRequest();
+  var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+  xhr.open('GET', url, true);
+  xhr.onload = function() {
+   var user = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    content += "<tr><td>" + user.id + "</td><td>" + user.name + "</td></tr>";
+    document.getElementById('result').innerHTML = content;
+   } else {
+    console.error(users);
+   }
+  }
+  xhr.send(null);
+
+ }
+ function Register() {
+  var url = "http://localhost:3000/api/users";
+  var data = {};
+  data.name = document.getElementById('username-rt').value;
+  data.email = document.getElementById('email').value;
+  data.password = document.getElementById('password-rt').value;
+  var json = JSON.stringify(data);
+  var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+  xhr.onload = function() {
+   var user = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    content += "<tr><td>" + user.id + "</td><td>" + user.name + "</td><td>"+ user.password +"</td></tr>";
+    document.getElementById('result').innerHTML = content;
+   } else {
+    console.error(users);
+   }
+  }
+  xhr.send(json);
+ }
+</script>
 </body>
 </html>

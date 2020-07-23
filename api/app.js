@@ -14,7 +14,8 @@ app.use((req, res, next) => {
 
 // TEMPORARY MASTER DATA USER
 const users = [
-    { id: 1, email: 'micha.hannah@gmail.com', password: 'password123' }
+    { id: 1, username: 'micha', email: 'micha.hannah@gmail.com', password: 'password123' },
+
 ];
 
 
@@ -38,7 +39,8 @@ app.get('/api/users', (req, res) => {
 
 });
 
-app.get('/api/users/:email/:password', (req, res) => {
+//LOGIN
+app.get('/api/users/:username/:password', (req, res) => {
 
     // LOG TIME
     var datetime = new Date();
@@ -47,7 +49,7 @@ app.get('/api/users/:email/:password', (req, res) => {
     console.log(req.body);
 
     // VALIDATE
-    const {error} = validateUser(req.params);
+    /*const {error} = validateUser(req.params);
     if (error) {
         console.log('Validation error');
 
@@ -58,11 +60,12 @@ app.get('/api/users/:email/:password', (req, res) => {
 
         return res.status(400).json(jsonRespond);
     }
-    console.log('Validation success and accepted');
+    console.log('Validation success and accepted');*/
 
     // CHECK IF THE EMAIL AND PASSWORD CORRECT
-    console.log('Check existing email: '+req.params.email+' and password: '+req.params.password);
-    const check_user = users.find( u => u.email === req.params.email && u.password === req.params.email );
+    //const email_check = users.find( u => u.username === req.params.username && u.password === req.params.password );
+    console.log('Check existing username: '+ req.params.username +' and password: '+req.params.password);
+    const check_user = users.find( u => u.username === req.params.username && u.password === req.params.password );
     if (!check_user) {
         var error_message = 'Invalid login detail. Email or password is not correct.';
         console.log(error_message);
@@ -76,7 +79,7 @@ app.get('/api/users/:email/:password', (req, res) => {
     }
 
     var jsonRespond = {
-        result: user,
+        result: users,
         message: "Login success"
     }
     return res.json(jsonRespond);
@@ -95,7 +98,7 @@ app.post('/api/users', (req, res) => {
     console.log(req.body);
 
     // VALIDATE
-    const {error} = validateUser(req.body);
+    const {error} = validateUser(req.body.email);
     if (error) {
         console.log('Validation error');
 
@@ -125,6 +128,7 @@ app.post('/api/users', (req, res) => {
     console.log('Email ' + req.body.email + ' is available for registration');
     const user = {
         id: users.length + 1,
+        username: req.body.username,
         email: req.body.email,
         password: req.body.password
     };
@@ -132,6 +136,83 @@ app.post('/api/users', (req, res) => {
     users.push(user);
     return res.json(user);
 });
+
+
+const listing = [
+    { id: 1, name: 'Matematika', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com'  },
+    { id: 2, name: 'Kimia', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com' },
+    { id: 3, name: 'Fisika', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com' },
+    { id: 4, name: 'Web Programming', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com' }
+];
+
+app.get('/', (req, res) => {
+    res.send('Welcome!');
+})
+
+app.get("/api/listing", (req, res) => {
+    return res.json(listing);
+});
+
+app.get('/api/listing/:id', (req, res) => {
+    const list = listing.find( l => l.id === parseInt(req.params.id) );
+    if (!list) return res.status(404).send('ID not found.');
+    return res.json(list);
+})
+
+app.post('/api/listing', (req, res) => {
+    const {error} = validateName(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+
+    const list = {
+        id: listing.length + 1,
+        name: req.body.name
+    };
+    courses.push(list);
+    return res.json(list);
+});
+
+app.put('/api/listing/:id', (req, res) => {
+    const {error} = validateListing(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+    const list = listing.find( l => l.id === parseInt(req.params.id) );
+    if (!list) return res.status(404).send('ID not found.');
+
+    listing.name = req.body.name;
+    listing.phone = req.body.phone;
+    listing.address = req.body.address;
+    listing.website = req.body.website;
+    return res.json(list);
+});
+
+app.delete('/api/listing/:id', (req, res) => {
+    const list = listing.find( l => l.id === parseInt(req.params.id) );
+    if (!list) return res.status(404).send('ID not found.');
+
+    const index = listing.indexOf(list);
+    listing.splice(index, 1);
+    return res.json(list);
+});
+
+function validateName(course) {
+    const schema = Joi.object({
+        name: Joi.string().min(3).required()
+    });
+
+    return schema.validate(course);
+}
+
+function validateListing(course) {
+    const schema = Joi.object({
+        name: Joi.string().min(3).required(),
+
+    });
+
+    return schema.validate(course);
+}
 
 /*
 *
