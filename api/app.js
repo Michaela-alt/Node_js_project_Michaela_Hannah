@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const express = require('express');
+const alert = require('alert');
 const app = express();
 
 app.use(express.json());
@@ -67,13 +68,14 @@ app.get('/api/users/:username/:password', (req, res) => {
     console.log('Check existing username: '+ req.params.username +' and password: '+req.params.password);
     const check_user = users.find( u => u.username === req.params.username && u.password === req.params.password );
     if (!check_user) {
-        var error_message = 'Invalid login detail. Email or password is not correct.';
+        var error_message = 'Invalid login detail. Username or password is not correct.';
         console.log(error_message);
 
         var jsonRespond = {
             result: "",
             message: error_message
         }
+        alert(error_message);
 
         return res.status(404).json(jsonRespond);
     }
@@ -91,6 +93,7 @@ app.get('/api/users/:username/:password', (req, res) => {
     }
     return res.json(jsonRespond);
     console.log('Login success!');
+    alert('Login success!');
 });
 
 // REGISTER NEW USER
@@ -111,6 +114,7 @@ app.post('/api/users', (req, res) => {
             result: "",
             message: error.details[0].message
         }
+        alert(error.details[0].message);
 
         return res.status(400).json(jsonRespond);
     }
@@ -123,8 +127,9 @@ app.post('/api/users', (req, res) => {
         console.log('Email: '+req.body.email+' or Username:' +req.body.username+ ' is already registered! ' );
         var jsonRespond = {
             result: "",
-            message: "Registration failed. Email "+req.body.email+" or Username "+req.body.username+" is already registered. Please use other email."
+            message: "Registration failed. Email "+req.body.email+" or Username "+req.body.username+" is already registered. Please use other email or username."
         }
+        alert('Registration failed. Email '+req.body.email+' or Username '+req.body.username+' is already registered. Please use other email or username.!');
 
         return res.status(404).json(jsonRespond);
     }
