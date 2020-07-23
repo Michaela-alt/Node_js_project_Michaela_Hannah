@@ -119,14 +119,14 @@ app.post('/api/users', (req, res) => {
     console.log('Validation success and accepted');
 
     // CHECK IF THE EMAIL ALREADY EXISTS
-    console.log('Check existing email: '+req.body);
-    const check_user = users.find( u => u.email === req.body.email );
+    console.log('Check existing email: '+req.body.email+ 'and existing username: '+req.body.email);
+    const check_user = users.find( u => u.email === req.body.email || u.username === req.body.username);
     if (check_user) {
-        console.log('Email: '+req.body.email+' is already registered');
+        console.log('Email: '+req.body.email+' or ' +req.body.username+ ' is already registered! ' );
 
         var jsonRespond = {
             result: "",
-            message: "Registration failed. Email "+req.body.email+" is already registered. Please use other email."
+            message: "Registration failed. Email "+req.body.email+" or Username "+req.body.username+" is already registered. Please use other email."
         }
 
         return res.status(404).json(jsonRespond);
