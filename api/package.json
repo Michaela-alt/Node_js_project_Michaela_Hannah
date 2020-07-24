@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "alert": "^5.0.1",
     "express": "^4.17.1",
     "joi": "^17.1.1",
     "nodemon": "^2.0.4"

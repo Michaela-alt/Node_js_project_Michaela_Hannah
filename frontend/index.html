@@ -3936,9 +3936,11 @@ Automotive
 
       var respond = JSON.parse(xhr.responseText);
       if (xhr.readyState == 4 && xhr.status == "200") {
+          windows.alert(respond.message);
           document.getElementById('registration_result').innerHTML = respond.message;
           //console.log(respond.message);
       } else {
+          alert(respond.message);
           console.error(respond);
           document.getElementById('registration_result').innerHTML = respond.message;
       }
@@ -3953,7 +3955,7 @@ Automotive
   data.email = document.getElementById('email').value;
   data.password = document.getElementById('password-rt').value;
   var json = JSON.stringify(data);
-  var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
+  //var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);

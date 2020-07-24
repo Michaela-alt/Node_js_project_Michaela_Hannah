@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const express = require('express');
-const alert = require('alert');
 const app = express();
 
 app.use(express.json());
@@ -49,20 +48,6 @@ app.get('/api/users/:username/:password', (req, res) => {
     console.log("Incoming new GET HTTP request for LOGIN");
     console.log(req.body);
 
-    // VALIDATE
-    /*const {error} = validateUser(req.params);
-    if (error) {
-        console.log('Validation error');
-
-        var jsonRespond = {
-            result: "",
-            message: error.details[0].message
-        }
-
-        return res.status(400).json(jsonRespond);
-    }
-    console.log('Validation success and accepted');*/
-
     // CHECK IF THE EMAIL AND PASSWORD CORRECT
     //const email_check = users.find( u => u.username === req.params.username && u.password === req.params.password );
     console.log('Check existing username: '+ req.params.username +' and password: '+req.params.password);
@@ -75,7 +60,6 @@ app.get('/api/users/:username/:password', (req, res) => {
             result: "",
             message: error_message
         }
-        alert(error_message);
 
         return res.status(404).json(jsonRespond);
     }
@@ -87,13 +71,12 @@ app.get('/api/users/:username/:password', (req, res) => {
         password: req.params.password
     };
 
+    console.log('Login success!');
     var jsonRespond = {
         result: user,
         message: "Login success"
     }
     return res.json(jsonRespond);
-    console.log('Login success!');
-    alert('Login success!');
 });
 
 // REGISTER NEW USER
@@ -114,8 +97,6 @@ app.post('/api/users', (req, res) => {
             result: "",
             message: error.details[0].message
         }
-        alert(error.details[0].message);
-
         return res.status(400).json(jsonRespond);
     }
     console.log('Validation success and accepted');
@@ -129,7 +110,6 @@ app.post('/api/users', (req, res) => {
             result: "",
             message: "Registration failed. Email "+req.body.email+" or Username "+req.body.username+" is already registered. Please use other email or username."
         }
-        alert('Registration failed. Email '+req.body.email+' or Username '+req.body.username+' is already registered. Please use other email or username.!');
 
         return res.status(404).json(jsonRespond);
     }
@@ -144,8 +124,9 @@ app.post('/api/users', (req, res) => {
 
     console.log(user);
     users.push(user);
-    return res.json(user);
     console.log('Register success!');
+    return res.json(user);
+
 });
 
 //DELETE A USER
@@ -161,8 +142,8 @@ app.delete('/api/users/:id', (req, res) => {
 
     const index = users.indexOf(user);
     users.splice(index, 1);
-    return res.json(user);
     console.log('Delete success!');
+    return res.json(user);
 });
 
 
@@ -179,8 +160,8 @@ app.get('/', (req, res) => {
 
 //LIST ALL DIRECTORY
 app.get("/api/listing", (req, res) => {
-    return res.json(listing);
     console.log('Listing success!');
+    return res.json(listing);
 });
 
 //LIST A DIRECTORY
@@ -193,13 +174,12 @@ app.get('/api/listing/:id', (req, res) => {
 
     const list = listing.find( l => l.id === parseInt(req.params.id) );
     if (!list) return res.status(404).send('ID not found.');
+    console.log('List found!');
     var jsonRespond = {
         result: list,
         message: "List found!"
     }
     return res.json(jsonRespond);
-    return res.json(list);
-    console.log('List found!');
 })
 
 //POST A DIRECTORY
@@ -222,14 +202,13 @@ app.post('/api/listing', (req, res) => {
         address: req.body.address,
         website: req.body.website
     };
-    courses.push(list);
+    listing.push(list);
+    console.log('Post success!');
     var jsonRespond = {
         result: list,
         message: "Post success!"
     }
     return res.json(jsonRespond);
-    return res.json(list);
-    console.log('Post success!');
 });
 
 //EDIT A DIRECTORY
@@ -247,12 +226,16 @@ app.put('/api/listing/:id', (req, res) => {
     const list = listing.find( l => l.id === parseInt(req.params.id) );
     if (!list) return res.status(404).send('ID not found.');
 
-    listing.name = req.body.name;
-    listing.phone = req.body.phone;
-    listing.address = req.body.address;
-    listing.website = req.body.website;
-    return res.json(list);
+    list.name = req.body.name;
+    list.phone = req.body.phone;
+    list.address = req.body.address;
+    list.website = req.body.website;
     console.log('Edit success!');
+    var jsonRespond = {
+        result: list,
+        message: "Edit success!"
+    }
+    return res.json(jsonRespond);
 });
 
 //DELETE A DIRECTORY
@@ -268,19 +251,23 @@ app.delete('/api/listing/:id', (req, res) => {
 
     const index = listing.indexOf(list);
     listing.splice(index, 1);
-    return res.json(list);
     console.log('Delete success!');
+    var jsonRespond = {
+        result: list,
+        message: "Delete success!"
+    }
+    return res.json(jsonRespond);
 });
 
-function validateListing(course) {
+function validateListing(list) {
     const schema = Joi.object({
         name: Joi.string().min(3).required(),
         phone: Joi.string().min(10).max(14).required(),
         address: Joi.string().min(3).required(),
-        website: Joi.string().min(3).uri().required(),
+        website: Joi.string().min(3).required(),
     });
 
-    return schema.validate(course);
+    return schema.validate(list);
 }
 
 /*
