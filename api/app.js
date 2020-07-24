@@ -110,7 +110,6 @@ app.post('/api/users', (req, res) => {
             result: "",
             message: "Registration failed. Email "+req.body.email+" or Username "+req.body.username+" is already registered. Please use other email or username."
         }
-
         return res.status(404).json(jsonRespond);
     }
 
