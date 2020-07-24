@@ -148,10 +148,10 @@ app.delete('/api/users/:id', (req, res) => {
 
 
 const listing = [
-    { id: 1, name: 'Pizza Hut',city: 'Jakarta', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com'  },
-    { id: 2, name: 'Hard Rock Hotel', city: 'Jakarta', phone: '0811816612' , address: '5th Avenue' , website: 'thedir.com' },
-    { id: 3, name: 'Carls Jr.', city: 'Jakarta', phone: '0811816613' , address: '5th Avenue' , website: 'thedir.com' },
-    { id: 4, name: 'Starbucks', city: 'Jakarta', phone: '0811816614' , address: '5th Avenue' , website: 'thedir.com' }
+    { id: 1, name: 'Pizza Hut',city: 'Jakarta', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com', email: 'micha.hannah@gmail.com' },
+    { id: 2, name: 'Hard Rock Hotel', city: 'Jakarta', phone: '0811816612' , address: '5th Avenue' , website: 'thedir.com', email: 'micha.hannah@gmail.com' },
+    { id: 3, name: 'Carls Jr.', city: 'Jakarta', phone: '0811816613' , address: '5th Avenue' , website: 'thedir.com', email: 'micha.hannah@gmail.com' },
+    { id: 4, name: 'Starbucks', city: 'Jakarta', phone: '0811816614' , address: '5th Avenue' , website: 'thedir.com', email: 'micha.hannah@gmail.com' }
 ];
 
 app.get('/', (req, res) => {
@@ -183,26 +183,27 @@ app.get('/api/listing/:id', (req, res) => {
 })
 
 //POST A DIRECTORY
-app.post('/api/listing', (req, res) => {
+app.post('/api/listing/:description1/:description2/:description3/:description4/:description5/:description6', (req, res) => {
 
     var datetime = new Date();
     console.log("\n"+datetime);
     console.log("Incoming new POST HTTP request");
-    console.log(req.body);
 
-    const {error} = validateListing(req.body);
+    const list = {
+        id: listing.length + 1,
+        name: req.params.description1,
+        city: req.params.description2,
+        phone: req.params.description3,
+        address: req.params.description4,
+        website: req.params.description5,
+        email: req.params.description6
+    };
+
+    const {error} = validateListing(list);
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
 
-    const list = {
-        id: listing.length + 1,
-        name: req.body.name,
-        city: req.body.city,
-        phone: req.body.phone,
-        address: req.body.address,
-        website: req.body.website
-    };
     listing.push(list);
     console.log('Post success!');
     var jsonRespond = {
@@ -232,6 +233,7 @@ app.put('/api/listing/:id', (req, res) => {
     list.phone = req.body.phone;
     list.address = req.body.address;
     list.website = req.body.website;
+    list.email = req.body.email;
     console.log('Edit success!');
     var jsonRespond = {
         result: list,
@@ -263,11 +265,13 @@ app.delete('/api/listing/:id', (req, res) => {
 
 function validateListing(list) {
     const schema = Joi.object({
+        id: Joi.number().integer(),
         name: Joi.string().min(3).required(),
         city: Joi.string().min(3).max(50).required(),
         phone: Joi.string().min(10).max(14).required(),
         address: Joi.string().min(3).required(),
         website: Joi.string().min(3).required(),
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required()
     });
 
     return schema.validate(list);
@@ -291,8 +295,8 @@ app.listen(port, () => {
 function validateUser(user) {
     const schema = Joi.object({
         username: Joi.string().alphanum().min(3).max(30).required(),
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
     });
 
     return schema.validate(user);

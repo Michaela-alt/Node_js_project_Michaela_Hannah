@@ -350,33 +350,33 @@ this submission.
 <img src="images/other/submit-listing-1.jpg" alt="Submit listing 01" class="card-img-top">
 <div class="card-body px-0 pt-6">
 <div class="form-group mb-4">
-<div class="text-dark font-weight-semibold font-size-md mb-2 lh-15">Listing Tittle
+<div class="text-dark font-weight-semibold font-size-md mb-2 lh-15">Listing Title
 <a href="#" class="text-darker-light d-inline-block ml-2" data-toggle="tooltip" data-placement="top" title="Title for listing"><i class="fas fa-question-circle"></i></a>
 </div>
-<input type="text" class="form-control" placeholder="Staple & Fancy Hotel">
+<input id="id_description1a" type="text" class="form-control" placeholder="Staple & Fancy Hotel">
 <input type="text" class="form-control" placeholder="Tagline Example: Best Express Mexican Grill">
 </div>
 <div class="form-group mb-4">
 <div class="mb-2 d-flex align-items-center lh-15">
-<label class="mb-0 text-dark font-weight-semibold font-size-md lh-15" for="city">City</label>
+<label class="mb-0 text-dark font-weight-semibold font-size-md lh-15" for="id_description2a">City</label>
 <a href="#" class="text-darker-light d-inline-block ml-2" data-toggle="tooltip" data-placement="top" title="Region of listing">
 <i class="fas fa-question-circle"></i></a></div>
-<input type="text" id="city" class="form-control" placeholder="Select your listing region">
+<input type="text" id="id_description2a" class="form-control" placeholder="Select your listing region">
 </div>
 <div class="form-group mb-4">
-<label for="phone" class="text-dark font-weight-semibold font-size-md mb-2 lh-15">Phone</label>
-<input type="text" id="phone" class="form-control" placeholder="123-456-789">
+<label for="id_description3a" class="text-dark font-weight-semibold font-size-md mb-2 lh-15">Phone</label>
+<input type="text" id="id_description3a" class="form-control" placeholder="123-456-789">
 </div>
 <div class="form-group mb-4">
 <div class="mb-2 d-flex align-items-center lh-15">
-<label class="mb-0 text-dark font-weight-semibold font-size-md lh-15" for="address">Full Address
+<label class="mb-0 text-dark font-weight-semibold font-size-md lh-15" for="id_description4a">Full Address
 (Geolocation) </label>
 <a href="#" class="text-darker-light d-inline-block ml-2" data-toggle="tooltip" data-placement="top" title="Full address for finding in google map"><i class="fas fa-question-circle"></i></a></div>
-<input type="text" id="address" class="form-control" placeholder="Start typing and find your place in google map">
+<input type="text" id="id_description4a" class="form-control" placeholder="Start typing and find your place in google map">
 </div>
 <div class="form-group mb-4">
-<label for="website" class="text-dark font-weight-semibold font-size-md mb-2 lh-15">Website</label>
-<input type="text" id="website" class="form-control" placeholder="http://">
+<label for="id_description5a" class="text-dark font-weight-semibold font-size-md mb-2 lh-15">Website</label>
+<input type="text" id="id_description5a" class="form-control" placeholder="http://">
 </div>
 </div>
 </div>
@@ -576,11 +576,11 @@ cards.
 <div class="pt-8 border-top">
 <div class="contact-section text-center pt-3">
 <div class="form-group mb-5">
-<label for="email-01" class="font-weight-semibold text-dark font-size-md">Enter email to signup & recieve
+<label for="id_description6a" class="font-weight-semibold text-dark font-size-md">Enter email to signup & recieve
 notification upon
 listing
 approval</label>
-<input type="email" class="form-control" id="email-01" placeholder="Enter your contact email">
+<input type="email" class="form-control" id="id_description6a" placeholder="Enter your contact email">
 </div>
 <div class="d-flex justify-content-center pb-8">
 <div class="custom-control custom-checkbox">
@@ -590,7 +590,7 @@ Already Have Account?
 </label>
 </div>
 </div>
-<button type="button" class="btn btn-primary btn-block font-size-h5 lh-19 mt-2">Save & Preview</button>
+<button type="button" class="btn btn-primary btn-block font-size-h5 lh-19 mt-2" onclick="CreateContent()">Save & Preview</button>
 </div>
 </div>
 </form>
@@ -1231,6 +1231,7 @@ Automotive
   var description3 = document.getElementById('id_description3a').value;
   var description4 = document.getElementById('id_description4a').value;
   var description5 = document.getElementById('id_description5a').value;
+  var description6 = document.getElementById('id_description6a').value;
 
   if(description1 == ''){
    description1 = 'o';
@@ -1247,8 +1248,11 @@ Automotive
   if(description5 == ''){
    description5 = 'o';
   }
+  if(description6 == ''){
+   description6 = 'o';
+  }
 
-  var url = 'http://localhost:3000/api/listing/'+description1+'/'+description2+'/'+description3+'/'+description4+'/'+description5;
+  var url = 'http://localhost:3000/api/listing/'+description1+'/'+description2+'/'+description3+'/'+description4+'/'+description5+'/'+description6;
   var xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
   xhr.onload = function(){
@@ -1260,9 +1264,9 @@ Automotive
 
  }
  function getAllContents() {
-  var url  = "http://localhost:3000/api/contents";
+  var url  = "http://localhost:3000/api/listing";
   var xhr  = new XMLHttpRequest();
-  var content = "<br><table><tr><th>ID</th><th>Description 1</th><th>Description 2</th><th>Description 3</th><th>Description 4</th></tr>";
+  var content = "<br><table><tr><th>ID</th><th>Description 1</th><th>Description 2</th><th>Description 3</th><th>Description 4</th><th>Description 5</th><th>Description 6</th></tr>";
   var end = "</table>";
   xhr.open('GET', url, true);
   xhr.onload = function() {
@@ -1279,7 +1283,7 @@ Automotive
   xhr.send(null);
  }
  function getContentDetail() {
-  var url  = "http://localhost:3000/api/contents/" + document.getElementById('id_ContentDetail').value;
+  var url  = "http://localhost:3000/api/listing/" + document.getElementById('id_ContentDetail').value;
   var xhr  = new XMLHttpRequest();
   var content = "<br><table><tr><th>ID</th><th>Description 1</th><th>Description 2</th><th>Description 3</th><th>Description 4</th></tr>";
   var end = "</table>";
@@ -1296,7 +1300,7 @@ Automotive
   xhr.send(null);
  }
  function UpdateContent1(){
-  var url  = "http://localhost:3000/api/contents/" + document.getElementById('id_UpdateContent').value;
+  var url  = "http://localhost:3000/api/listing/" + document.getElementById('id_UpdateContent').value;
   var id = document.getElementById('id_UpdateContent').value;
   var xhr  = new XMLHttpRequest();
   xhr.open('PUT', url, true);
@@ -1313,7 +1317,7 @@ Automotive
   xhr.send(null);
  }
  function UpdateContent() {
-  var url = "http://localhost:3000/api/contentsRegistration/" + document.getElementById('hiddenID').value;
+  var url = "http://localhost:3000/api/listing/" + document.getElementById('hiddenID').value;
   var data = {};
 
   data.contentID = document.getElementById('hiddenID').value;
@@ -1338,7 +1342,7 @@ Automotive
   xhr.send(json);
  }
  function DeleteContent() {
-  var url  = "http://localhost:3000/api/contents/" + document.getElementById('id_DeleteContent').value;
+  var url  = "http://localhost:3000/api/listing/" + document.getElementById('id_DeleteContent').value;
   var id = document.getElementById('id_DeleteContent').value;
   var xhr  = new XMLHttpRequest();
   var content = '';
