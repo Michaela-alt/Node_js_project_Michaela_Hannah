@@ -148,10 +148,10 @@ app.delete('/api/users/:id', (req, res) => {
 
 
 const listing = [
-    { id: 1, name: 'Pizza Hut', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com'  },
-    { id: 2, name: 'Hard Rock Hotel', phone: '0811816612' , address: '5th Avenue' , website: 'thedir.com' },
-    { id: 3, name: 'Carls Jr.', phone: '0811816613' , address: '5th Avenue' , website: 'thedir.com' },
-    { id: 4, name: 'Starbucks', phone: '0811816614' , address: '5th Avenue' , website: 'thedir.com' }
+    { id: 1, name: 'Pizza Hut',city: 'Jakarta', phone: '0811816611' , address: '5th Avenue' , website: 'thedir.com'  },
+    { id: 2, name: 'Hard Rock Hotel', city: 'Jakarta', phone: '0811816612' , address: '5th Avenue' , website: 'thedir.com' },
+    { id: 3, name: 'Carls Jr.', city: 'Jakarta', phone: '0811816613' , address: '5th Avenue' , website: 'thedir.com' },
+    { id: 4, name: 'Starbucks', city: 'Jakarta', phone: '0811816614' , address: '5th Avenue' , website: 'thedir.com' }
 ];
 
 app.get('/', (req, res) => {
@@ -198,6 +198,7 @@ app.post('/api/listing', (req, res) => {
     const list = {
         id: listing.length + 1,
         name: req.body.name,
+        city: req.body.city,
         phone: req.body.phone,
         address: req.body.address,
         website: req.body.website
@@ -227,6 +228,7 @@ app.put('/api/listing/:id', (req, res) => {
     if (!list) return res.status(404).send('ID not found.');
 
     list.name = req.body.name;
+    list.city = req.body.city;
     list.phone = req.body.phone;
     list.address = req.body.address;
     list.website = req.body.website;
@@ -262,6 +264,7 @@ app.delete('/api/listing/:id', (req, res) => {
 function validateListing(list) {
     const schema = Joi.object({
         name: Joi.string().min(3).required(),
+        city: Joi.string().min(3).max(50).required(),
         phone: Joi.string().min(10).max(14).required(),
         address: Joi.string().min(3).required(),
         website: Joi.string().min(3).required(),

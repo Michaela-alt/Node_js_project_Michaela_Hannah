@@ -3936,7 +3936,11 @@ Automotive
 
       var respond = JSON.parse(xhr.responseText);
       if (xhr.readyState == 4 && xhr.status == "200") {
-          windows.alert(respond.message);
+          alert('You have succesfully logged in!');
+          window.location.replace("index.html");
+          localStorage.setItem("session_userID", respond.id);
+
+          alert(respond.message);
           document.getElementById('registration_result').innerHTML = respond.message;
           //console.log(respond.message);
       } else {
@@ -3949,29 +3953,41 @@ Automotive
 
  }
  function Register() {
-  var url = "http://localhost:3000/api/users";
-  var data = {};
-  data.name = document.getElementById('username-rt').value;
-  data.email = document.getElementById('email').value;
-  data.password = document.getElementById('password-rt').value;
-  var json = JSON.stringify(data);
-  //var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
+     register_password = document.getElementById('password-rt').value;
+     register_retypePass = document.getElementById('r-password').value;
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', url, true);
-  xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-  xhr.onload = function() {
+     if (register_password != register_retypePass) {
+         alert ('Your password does not match!');
+     } else {
+         var url = "http://localhost:3000/api/users";
+         var data = {
+             name: document.getElementById('username-rt').value,
+             email: document.getElementById('email').value,
+             password: document.getElementById('password-rt').value;
+         };
+         var json = JSON.stringify(data);
+         //var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
 
-      console.log(xhr.responseText);
+         var xhr = new XMLHttpRequest();
+         xhr.open('POST', url, true);
+         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+         xhr.onload = function () {
+             console.log(xhr.responseText);
+             var respond = JSON.parse(xhr.responseText);
+             if (xhr.readyState == 4 && xhr.status == "200") {
+                 alert('Registration successful!' + respond.id);
+                 window.location.replace("index.html");
+                 localStorage.setItem("session_userID", respond.id);
 
-      var respond = JSON.parse(xhr.responseText);
-      if (xhr.readyState == 4 && xhr.status == "200") {
-          document.getElementById('registration_result').innerHTML = respond.message;
-          //console.log(respond.message);
-      } else {
-          console.error(respond);
-          document.getElementById('registration_result').innerHTML = respond.message;
-      }
+                 document.getElementById('registration_result').innerHTML = respond.message;
+                 //console.log(respond.message);
+             } else {
+                 alert('Registration failed! ' + ' Reason: ' + xhr.responseText);
+                 console.error(respond);
+                 document.getElementById('registration_result').innerHTML = respond.message;
+             }
+         }
+     }
   }
   xhr.send(json);
  }

@@ -1218,61 +1218,141 @@ Automotive
 </defs>
 </svg>
 <script>
- function Login() {
-  username = document.getElementById('id_getUsername').value;
-  password = document.getElementById('id_getPassword').value;
-  var url  = "http://localhost:3000/api/users/" + username + "/" + password;
+ function CreateContent(){
+  var form ="<form id='id_Form'>Description 1: <input type='text' id='id_description1a' placeholder='Input new description 1'><br>Description 2: <input type='text' id='id_description2a' placeholder='Input new description 2'><br>Description 3: <input type='text' id='id_description3a' placeholder='Input new description 3'><br>Description 4: <input type='text' id='id_description4a' placeholder='Input new description 4'><br>";
+  var button = "<button onclick='CreateContent1()'>Click to create content</button></form>";
+  document.getElementById('result').innerHTML = form+button;
 
-  var data = {};
-  data.username = username;
-  data.password = password;
-  var json = JSON.stringify(data);
+ }
 
-  var xhr  = new XMLHttpRequest();
-  var content = "<tr><th>ID</th><th>Course Name</th></tr>";
-  xhr.open('GET', url, true);
-  xhr.onload = function() {
+ function CreateContent1(){
+  var description1 = document.getElementById('id_description1a').value;
+  var description2 = document.getElementById('id_description2a').value;
+  var description3 = document.getElementById('id_description3a').value;
+  var description4 = document.getElementById('id_description4a').value;
+  var description5 = document.getElementById('id_description5a').value;
 
-   console.log(xhr.responseText);
+  if(description1 == ''){
+   description1 = 'o';
+  }
+  if(description2 == ''){
+   description2 = 'o';
+  }
+  if(description3 == ''){
+   description3 = 'o';
+  }
+  if(description4 == ''){
+   description4 = 'o';
+  }
+  if(description5 == ''){
+   description5 = 'o';
+  }
 
-   var respond = JSON.parse(xhr.responseText);
+  var url = 'http://localhost:3000/api/listing/'+description1+'/'+description2+'/'+description3+'/'+description4+'/'+description5;
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.onload = function(){
    if (xhr.readyState == 4 && xhr.status == "200") {
-    document.getElementById('registration_result').innerHTML = respond.message;
-    console.log(respond.message);
-   } else {
-    console.error(respond);
-    document.getElementById('registration_result').innerHTML = respond.message;
+    document.getElementById('result').innerHTML = 'Data has been saved succesfully!';
    }
   }
   xhr.send(null);
 
  }
- function Register() {
-  var url = "http://localhost:3000/api/users";
+ function getAllContents() {
+  var url  = "http://localhost:3000/api/contents";
+  var xhr  = new XMLHttpRequest();
+  var content = "<br><table><tr><th>ID</th><th>Description 1</th><th>Description 2</th><th>Description 3</th><th>Description 4</th></tr>";
+  var end = "</table>";
+  xhr.open('GET', url, true);
+  xhr.onload = function() {
+   var contents = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    contents.forEach((val) => {
+     content += '<tr><td>'+val.contentID+'</td><td>'+val.Description1+'</td><td>'+val.Description2+'</td><td>'+val.Description3+'</td><td>'+val.Description4+'</td></tr>';
+    })
+    document.getElementById('result').innerHTML = content + end;
+   } else {
+    console.error(accounts);
+   }
+  }
+  xhr.send(null);
+ }
+ function getContentDetail() {
+  var url  = "http://localhost:3000/api/contents/" + document.getElementById('id_ContentDetail').value;
+  var xhr  = new XMLHttpRequest();
+  var content = "<br><table><tr><th>ID</th><th>Description 1</th><th>Description 2</th><th>Description 3</th><th>Description 4</th></tr>";
+  var end = "</table>";
+  xhr.open('GET', url, true);
+  xhr.onload = function() {
+   var contents = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    content += '<tr><td>'+contents.contentID+'</td><td>'+contents.Description1+'</td><td>'+contents.Description2+'</td><td>'+contents.Description3+'</td><td>'+contents.Description4+'</td></tr>';
+    document.getElementById('result').innerHTML = content + end;
+   } else {
+    console.error(content);
+   }
+  }
+  xhr.send(null);
+ }
+ function UpdateContent1(){
+  var url  = "http://localhost:3000/api/contents/" + document.getElementById('id_UpdateContent').value;
+  var id = document.getElementById('id_UpdateContent').value;
+  var xhr  = new XMLHttpRequest();
+  xhr.open('PUT', url, true);
+  xhr.onload = function() {
+   var content = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    var form ="<form id='id_Form'>Description 1: <input type='text' id='id_description1' placeholder='Input new description 1' value='"+content.Description1+"'><br>Description 2: <input type='text' id='id_description2' placeholder='Input new description 2' value='"+content.Description2+"'><br>Description 3: <input type='text' id='id_description3' placeholder='Input new description 3' value='"+content.Description3+"'><br>Description 4: <input type='text' id='id_description4' placeholder='Input new description 4' value='"+content.Description4+"'><br><input type='hidden' id='hiddenID' value='"+content.contentID+"'>";
+    var button = "<button onclick='UpdateContent()'>Click to update</button></form>";
+    document.getElementById('result').innerHTML = form + button;
+   } else {
+    console.error(content);
+   }
+  }
+  xhr.send(null);
+ }
+ function UpdateContent() {
+  var url = "http://localhost:3000/api/contentsRegistration/" + document.getElementById('hiddenID').value;
   var data = {};
-  data.name = document.getElementById('username-rt').value;
-  data.email = document.getElementById('email').value;
-  data.password = document.getElementById('password-rt').value;
-  var json = JSON.stringify(data);
-  var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
 
+  data.contentID = document.getElementById('hiddenID').value;
+  data.Description1 = document.getElementById('id_description1').value;
+  data.Description2 = document.getElementById('id_description2').value;
+  data.Description3 = document.getElementById('id_description3').value;
+  data.Description4 = document.getElementById('id_description4').value;
+
+  var json = JSON.stringify(data);
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', url, true);
+
+  xhr.open('PUT', url, true);
   xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
   xhr.onload = function() {
-
-   console.log(xhr.responseText);
-
-   var respond = JSON.parse(xhr.responseText);
+   var content = JSON.parse(xhr.responseText);
    if (xhr.readyState == 4 && xhr.status == "200") {
-    document.getElementById('registration_result').innerHTML = respond.message;
-    //console.log(respond.message);
+    document.getElementById('result').innerHTML = 'Data has been changed';
    } else {
-    console.error(respond);
-    document.getElementById('registration_result').innerHTML = respond.message;
+    console.error(content);
    }
   }
   xhr.send(json);
+ }
+ function DeleteContent() {
+  var url  = "http://localhost:3000/api/contents/" + document.getElementById('id_DeleteContent').value;
+  var id = document.getElementById('id_DeleteContent').value;
+  var xhr  = new XMLHttpRequest();
+  var content = '';
+  xhr.open('DELETE', url, true);
+  xhr.onload = function() {
+   var contents = JSON.parse(xhr.responseText);
+   if (xhr.readyState == 4 && xhr.status == "200") {
+    content='User with id: '+id+' has been deleted!';
+    document.getElementById('result').innerHTML = content;
+   } else {
+    console.error(contents);
+   }
+  }
+  xhr.send(null);
  }
 </script>
 </body>
