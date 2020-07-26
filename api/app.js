@@ -182,26 +182,29 @@ app.get('/api/listing/:id', (req, res) => {
 })
 
 //POST A DIRECTORY
-app.post('/api/listing/:description1/:description2/:description3/:description4/:description5/:description6', (req, res) => {
+app.post('/api/listing', (req, res) => {
 
     var datetime = new Date();
     console.log("\n"+datetime);
     console.log("Incoming new POST HTTP request");
 
-    const list = {
-        id: listing.length + 1,
-        name: req.params.description1,
-        city: req.params.description2,
-        phone: req.params.description3,
-        address: req.params.description4,
-        website: req.params.description5,
-        email: req.params.description6
-    };
-
-    const {error} = validateListing(list);
+    console.log(req.body);
+    const {error} = validateListing(req.body);
     if (error) {
+        console.log('Validation error');
         return res.status(400).send(error.details[0].message);
     }
+
+    const list = {
+        id: listing.length + 1,
+        name: req.body.name,
+        city: req.body.city,
+        phone: req.body.phone,
+        address: req.body.address,
+        website: req.body.website,
+        email: req.body.email
+    };
+    console.log(list);
 
     listing.push(list);
     console.log('Post success!');
@@ -222,6 +225,7 @@ app.put('/api/listing/:id', (req, res) => {
 
     const {error} = validateListing(req.body);
     if (error) {
+        console.log('Validation error');
         return res.status(400).send(error.details[0].message);
     }
     const list = listing.find( l => l.id === parseInt(req.params.id) );
@@ -264,7 +268,6 @@ app.delete('/api/listing/:id', (req, res) => {
 
 function validateListing(list) {
     const schema = Joi.object({
-        id: Joi.number().integer(),
         name: Joi.string().min(3).required(),
         city: Joi.string().min(3).max(50).required(),
         phone: Joi.string().min(10).max(14).required(),

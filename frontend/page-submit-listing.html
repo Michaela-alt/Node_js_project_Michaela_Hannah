@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -6,9 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Submit listing | TheDir</title>
 
-<script src="../cdn-cgi/apps/head/2oc_RD5SS6wgN5SiQnSEnWVNHg8.js"></script><link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+<!--<script src="../cdn-cgi/apps/head/2oc_RD5SS6wgN5SiQnSEnWVNHg8.js"></script><link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">-->
 <link href="https://fonts.googleapis.com/css?family=Poppins:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="vendors/font-awesome/css/fontawesome.css">
+<!--<link rel="stylesheet" href="vendors/font-awesome/css/fontawesome.css">-->
 <link rel="stylesheet" href="vendors/magnific-popup/magnific-popup.css">
 <link rel="stylesheet" href="vendors/slick/slick.css">
 <link rel="stylesheet" href="vendors/animate.css">
@@ -590,7 +590,7 @@ Already Have Account?
 </label>
 </div>
 </div>
-<button type="button" class="btn btn-primary btn-block font-size-h5 lh-19 mt-2" onclick="CreateContent()">Save & Preview</button>
+<button type="submit" class="btn btn-primary btn-block font-size-h5 lh-19 mt-2" onclick="CreateContent1()">Save & Preview</button>
 </div>
 </div>
 </form>
@@ -1078,7 +1078,7 @@ Automotive
 </div>
 </div>
 
-<script src="vendors/jquery.min.js"></script>
+<!--<script src="vendors/jquery.min.js"></script>
 <script src="vendors/jquery-ui/jquery-ui.min.js"></script>
 <script src="vendors/popper/popper.js"></script>
 <script src="vendors/bootstrap/js/bootstrap.js"></script>
@@ -1092,7 +1092,7 @@ Automotive
 <script src="vendors/tinymce/js/tinymce/tinymce.min.js"></script>
 <script src="vendors/uploader/js/dropzone.min.js"></script>
 
-<script src="js/app.js"></script>
+<script src="js/app.js"></script>-->
 <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <defs>
 <symbol id="icon-bed" viewBox="0 0 32 32">
@@ -1218,52 +1218,47 @@ Automotive
 </defs>
 </svg>
 <script>
- function CreateContent(){
-  var form ="<form id='id_Form'>Description 1: <input type='text' id='id_description1a' placeholder='Input new description 1'><br>Description 2: <input type='text' id='id_description2a' placeholder='Input new description 2'><br>Description 3: <input type='text' id='id_description3a' placeholder='Input new description 3'><br>Description 4: <input type='text' id='id_description4a' placeholder='Input new description 4'><br>";
-  var button = "<button onclick='CreateContent1()'>Click to create content</button></form>";
-  document.getElementById('result').innerHTML = form+button;
-
- }
 
  function CreateContent1(){
-  var description1 = document.getElementById('id_description1a').value;
-  var description2 = document.getElementById('id_description2a').value;
-  var description3 = document.getElementById('id_description3a').value;
-  var description4 = document.getElementById('id_description4a').value;
-  var description5 = document.getElementById('id_description5a').value;
-  var description6 = document.getElementById('id_description6a').value;
+  var name = document.getElementById('id_description1a').value;
+  var city = document.getElementById('id_description2a').value;
+  var phone = document.getElementById('id_description3a').value;
+  var address = document.getElementById('id_description4a').value;
+  var website = document.getElementById('id_description5a').value;
+  var email = document.getElementById('id_description6a').value;
 
-  if(description1 == ''){
-   description1 = 'o';
+  if(name == ''){
+   name = "Micha's Hotel";
   }
-  if(description2 == ''){
-   description2 = 'o';
+  if(city == ''){
+   city = 'Jakarta';
   }
-  if(description3 == ''){
-   description3 = 'o';
+  if(phone == ''){
+   phone = '12345678910';
   }
-  if(description4 == ''){
-   description4 = 'o';
+  if(address == ''){
+   address = 'Jl. Kijang Emas';
   }
-  if(description5 == ''){
-   description5 = 'o';
+  if(website == ''){
+   website = 'www.micha.com';
   }
-  if(description6 == ''){
-   description6 = 'o';
+  if(email == ''){
+   email = 'micha.hannah@gmail.com';
   }
 
-  var url = 'http://localhost:3000/api/listing/'+description1+'/'+description2+'/'+description3+'/'+description4+'/'+description5+'/'+description6;
+  var url = 'http://localhost:3000/api/listing';
   var xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
   xhr.onload = function(){
    if (xhr.readyState == 4 && xhr.status == "200") {
+    alert("Data has been saved successfully!");
     document.getElementById('result').innerHTML = 'Data has been saved succesfully!';
    }
   }
   xhr.send(null);
 
  }
- function getAllContents() {
+ /*function getAllContents() {
   var url  = "http://localhost:3000/api/listing";
   var xhr  = new XMLHttpRequest();
   var content = "<br><table><tr><th>ID</th><th>Description 1</th><th>Description 2</th><th>Description 3</th><th>Description 4</th><th>Description 5</th><th>Description 6</th></tr>";
@@ -1357,7 +1352,6 @@ Automotive
    }
   }
   xhr.send(null);
- }
-</script>
+ }*/</script>
 </body>
 </html>
