@@ -3966,8 +3966,6 @@ Automotive
              password: document.getElementById('password-rt').value;
          };
          var json = JSON.stringify(data);
-         //var content = "<tr><th>ID</th><th>Username</th><th>Password</th></tr>";
-
          var xhr = new XMLHttpRequest();
          xhr.open('POST', url, true);
          xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -3987,10 +3985,9 @@ Automotive
                  document.getElementById('registration_result').innerHTML = respond.message;
              }
          }
+         xhr.send(json);
      }
   }
-  xhr.send(json);
- }
 </script>
 </body>
 </html>

@@ -303,3 +303,5 @@ function validateUser(user) {
 
     return schema.validate(user);
 }
+
+/* Maaf kak, saya tidak bisa melanjutkan tugas ini karena saya tidak dapat menemukan kesalahan dalam coding tetapi saya tetap tidak bisa mengeksekusi kode dari html*/

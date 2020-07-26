@@ -1245,7 +1245,15 @@ Automotive
   if(email == ''){
    email = 'micha.hannah@gmail.com';
   }
-
+  var data = {
+   name: name,
+   city: city,
+   phone: phone,
+   address: address,
+   website: website,
+   email: email
+  };
+  var json = JSON.stringify(data);
   var url = 'http://localhost:3000/api/listing';
   var xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
@@ -1255,8 +1263,7 @@ Automotive
     document.getElementById('result').innerHTML = 'Data has been saved succesfully!';
    }
   }
-  xhr.send(null);
-
+  xhr.send(json);
  }
  /*function getAllContents() {
   var url  = "http://localhost:3000/api/listing";
